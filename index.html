@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="content">
+        <main>
+            <div id="row1"></div>
+            <div id="row2"></div>
+            <div id="row3"></div>
+        </main>
+        <!-- <kbd class="key"></kbd>         -->
+    </div>
+    <script>
+        //初始化数据
+        var initObj = init()
+        var keys = initObj['keys']
+        var hash = initObj['hash']
+        var row = [], index2 = 0, kbd = {}, rowID = '', id = '', editWeb = '', img = {};
+        var key = '', website = '';
+        //生成键盘
+        generateKeyboard(keys, hash)
+
+        //监听键盘事件
+        listenToKeyboard(hash)
+         
+        //工具函数
+        function tag(targetName, attributes) {
+            var element = document.createElement(targetName)
+            if (attributes) {
+                for (var key in attributes) {
+                    element[key] = attributes[key]
+                }
+            }
+            return element
+        }
+
+        function createbutton(id) {
+            var edit = tag('button', { textContent: 'E', id: id })
+            edit.onclick = function (event) {
+                id = event.target.id
+                var imgEdit = event.target.previousSibling
+                editWeb = prompt('编辑你的网址')
+                imgEdit.src = 'http://' + editWeb + '/favicon.ico'
+                imgEdit.onerror = function (event) {
+                    event.target.src = '//i.loli.net/2017/11/10/5005afbc5e183.png'
+                }
+                hash[id] = editWeb
+                localStorage.setItem('websites', JSON.stringify(hash))
+            }
+            return edit
+        }
+
+        function createImage(domain) {
+            var img = tag('img')
+            if (domain) {
+                img.src = 'http://' + domain + '/favicon.ico'
+            } else {
+                img.src = '//i.loli.net/2017/11/10/5005afbc5e183.png'
+            }
+            img.onerror = function (event) {
+                event.target.src = '//i.loli.net/2017/11/10/5005afbc5e183.png'
+            }
+            return img
+        }
+
+        function init() {
+            var keys = {
+                0: { 0: 'q', 1: 'w', 2: 'e', 3: 'r', 4: 't', 5: 'y', 6: 'u', 7: 'i', 8: 'o', 9: 'p', length: 10 },
+                1: { 0: 'a', 1: 's', 2: 'd', 3: 'f', 4: 'g', 5: 'h', 6: 'j', 7: 'k', 8: 'l', length: 9 },
+                2: { 0: 'z', 1: 'x', 2: 'c', 3: 'v', 4: 'b', 5: 'n', 6: 'm', length: 7 },
+                length: 3
+            }
+
+            var hash = {
+                q: 'qq.com',
+                w: 'weibo.com',
+                e: 'ele.me',
+                r: 'renren.com',
+                t: 'tianya.com',
+                y: 'youku.com',
+                i: 'iqiyi.com',
+                s: 'souhu.com',
+                z: 'zhihu.com'
+            }
+            var hashFromLocaleStorage = getFromLocalStorage('websites')
+            if (hashFromLocaleStorage) {
+                hash = hashFromLocaleStorage
+            }
+            return {
+                keys: keys,
+                hash: hash
+            }
+        }
+
+        function getFromLocalStorage(name) {
+            if (localStorage.getItem(name)) {
+                return JSON.parse(localStorage.getItem(name))
+            }
+        }
+
+        function generateKeyboard(keys, hash) {
+            for (var index1 = 0; index1 < keys['length']; index1++) {
+                row = keys[index1]
+                for (var index2 = 0; index2 < row['length']; index2++) {
+                    img = createImage(hash[row[index2]])
+
+                    edit = createbutton(row[index2])
+
+                    kbd = tag('kbd', { textContent: row[index2], className: 'key' })
+                    kbd.appendChild(img)
+                    kbd.appendChild(edit)
+
+                    rowID = 'row' + (index1 + 1)
+                    document.getElementById(rowID).appendChild(kbd)
+                }
+            }
+        }
+
+        function listenToKeyboard(hash) {
+            document.onkeypress = function (event) {
+                key = event['key']
+                website = 'http://' + hash[key]
+                location.href = website
+            }
+        }
+    </script>
+</body>
+
+</html>

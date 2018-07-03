@@ -1,0 +1,65 @@
+body {
+    background: #ddd url('./images/wall.png') no-repeat center center fixed;
+    background-size: cover; 
+}
+.content {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content>main {
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+}
+
+.content>main kbd {
+    display: inline-block;
+    /* border: 1px solid red; */
+    text-transform: uppercase;
+    position: relative;
+}
+
+kbd>button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+
+kbd:hover>button {
+    display: inline-block;
+}
+
+.key {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(to bottom, #292929 0%, #191919 100%);
+    margin: 20px;
+    border-radius: 7px;
+    border: 2px solid #303030;
+    box-shadow: 0 0 0 1px #161718, 0 0 0 1px #1e1f20, 0 2px 0 3px #161717;
+    color: #d0d0d0;
+    font-size: 17px;
+    font-family: webkit-body;
+    text-indent: -26px;
+}
+
+#row2 {
+    margin-left: -40px;
+}
+
+#row3 {
+    margin-left: -140px;
+}
+
+.key img {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 5px;
+    bottom: 0;
+}
